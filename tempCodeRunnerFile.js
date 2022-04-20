@@ -1,1 +1,1 @@
- costumerById && 
+console.log(carMarket);

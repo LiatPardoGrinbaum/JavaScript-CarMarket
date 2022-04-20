@@ -751,7 +751,7 @@ carMarket.getCustomerCash = function (costId) {
   const costumerById = this.customers.find((costumerObj) => costumerObj.id === costId);
   return costumerById && costumerById.cash;
 };
-console.log("*****CUSTUMER CASH BY ID******");
+console.log("*****CUSTOMER CASH BY ID******");
 console.log(carMarket.getCustomerCash("BGzHhjnE8"));
 
 //!------------------------------------------------------------
@@ -760,6 +760,13 @@ console.log(carMarket.getCustomerCash("BGzHhjnE8"));
 //? set all cars model object the current brand
 //? @param {}
 //? @return {}
+carMarket.setPropertyBrandToAllCars = function () {
+  // const brandObj =
+  this.sellers.forEach((seller) => seller.cars.forEach((car) => car.models.forEach((model) => (model.brand = car.brand))));
+};
+carMarket.setPropertyBrandToAllCars();
+console.log("****BRAND ADDED TO MODEL IN ALL CARS OBJECTS");
+console.log(carMarket.getAllCarToBuy());
 
 //todo Agency setters
 
@@ -767,26 +774,84 @@ console.log(carMarket.getCustomerCash("BGzHhjnE8"));
 //? @param {string} - id of agency
 //? @param {object} - carObject
 //? @return {}
+const newCar = {
+  brand: "Kia Picanto",
+  models: [
+    {
+      name: "Liat's Car",
+      year: 2013,
+      price: 40000,
+      carNumber: "4045852",
+      ownerId: "Plyq5M5AZ",
+      Brand: "Kia Picanto",
+    },
+  ],
+};
+
+carMarket.setNewCarToAgency = function (id, carObj) {
+  const agency = this.sellers.find((obj) => obj.agencyId === id);
+  agency.cars.push(carObj);
+};
+carMarket.setNewCarToAgency("Plyq5M5AZ", newCar);
+console.log("****ADDED LIATS CAR TO CARS TO BUY BY AGENCY ID****");
+console.log(carMarket.getAllCarToBuyByAgencyId("Plyq5M5AZ"));
 
 //* deleteCarFromAgency
 //? @param {string} - id of agency
 //? @param {string} -  Car id
 // ? @return {}
 
+carMarket.deleteCarFromAgency = function (id, carId) {
+  const agency = this.sellers.find((obj) => obj.agencyId === id);
+  agency.cars.forEach((car) =>
+    car.models.forEach((model, idx) => {
+      if (model.carNumber === carId) {
+        car.models.splice(idx, 1); //deleted from array
+      }
+    })
+  );
+};
+
+carMarket.deleteCarFromAgency("Plyq5M5AZ", "AZJZ4");
+console.log("****deleted AZJZ4 car from agency Plyq5M5AZ****");
+console.log(carMarket.getAllCarToBuyByAgencyId("Plyq5M5AZ"));
+
 //* decrementOrIncrementCashOfAgency
 //? @param {string} - agencyId
 //? @param {number} - amount - negative or positive amount
 // ? @return {number} - agencyCash
+carMarket.decrementOrIncrementCashOfAgency = function (id, amount) {
+  const agency = this.sellers.find((obj) => obj.agencyId === id);
+  agency.cash += amount;
+  return agency.cash;
+};
+carMarket.decrementOrIncrementCashOfAgency("Plyq5M5AZ", 100000);
+console.log("****INCREMENT CASH TO AGENCY ID Plyq5M5AZ****");
+console.log(carMarket.getAgencyByName("Best Deal"));
 
 //* decrementOrIncrementCreditOfAgency
 //? @param {string} - agencyId
 //? @param {number} - amount - negative or positive amount
 // ? @return {number} - agencyCash
+carMarket.decrementOrIncrementCreditOfAgency = function (id, amount) {
+  const agency = this.sellers.find((obj) => obj.agencyId === id);
+  agency.credit -= amount;
+  return agency.cash;
+};
+carMarket.decrementOrIncrementCreditOfAgency("Plyq5M5AZ", 50000);
+console.log("****DECREMENT CREDIT TO AGENCY ID Plyq5M5AZ****");
+console.log(carMarket.getAgencyByName("Best Deal"));
 
 //* setAmountOfCarsToBuyToAllAgency's
 //? set a new property amountOfCars to all agency's, that represent the amount of cars available in the agency.
 //? @param {}
 // ? @return {objects[]} - sellers - array of all agency's
+carMarket.setAmountOfCarsToBuyToAllAgency = function () {
+  this.sellers.forEach((agencyObj) => (agencyObj.amountOfCars = agencyObj.cars.length));
+  return this.sellers;
+};
+console.log("****ARRAY OF AGENCIES WITH NEW PROPERTY- amountOfCars****");
+console.log(carMarket.setAmountOfCarsToBuyToAllAgency());
 
 //todo setters
 //* setCarToCostumer
