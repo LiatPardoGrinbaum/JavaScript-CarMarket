@@ -632,34 +632,24 @@ const carMarket = {
 //add it to the carMarket as a method
 carMarket.getAgencyByName = function (name) {
   const agency = this.sellers.find((agencyObj) => agencyObj.agencyName === name);
-  if (agency) {
-    return agency;
-  } else {
-    return undefined;
-  }
+  // if (agency) {
+  return agency;
+  // } else {
+  //   return undefined;
+  // }
 };
+console.log("*****AGENCY BY NAME ******");
 console.log(carMarket.getAgencyByName("Best Deal"));
 
 //* getAgencyIdByName
 //? @param {String} - name
 //? @return {String} - agencyId
 carMarket.getAgencyIdByName = function (name) {
-  if (this.getAgencyByName(name)) {
-    return (idAgency = this.getAgencyByName(name).agencyId);
-  } else {
-    return undefined;
-  }
+  const agency = this.getAgencyByName(name);
+  return agency && agency.agencyId; //coditional abuse
 };
+console.log("*****AGENCY ID BY NAME ******");
 console.log(carMarket.getAgencyIdByName("Best Deal"));
-
-/* carMarket.getAgencyIdByName = function (name) {
-  const agency = this.sellers.find((agencyObject) => {
-    return name === agencyObject.agencyName;
-  });
-  // conditional abuse
-  return agency && agency.agencyId;
-}; */
-// console.log(carMarket.getAgencyIdByName('Best Deal'));
 
 //* getAllAgenciesName
 //? @param {}
@@ -709,25 +699,60 @@ console.log(carMarket.getAllBrandsToBuyAgencyId("Plyq5M5AZ"));
 
 //! customer func's
 //todo getters
+
 //* getCustomerByName
 //? @param {string} - name
 //? @return {Object} - customer
+carMarket.getCustomerByName = function (costumerName) {
+  const costumer = this.customers.find((costumerObj) => costumerObj.name === costumerName);
+  return costumer;
+};
+console.log("*****CUSTOUMER BY NAME******");
+console.log(carMarket.getCustomerByName("Lilah Goulding"));
 
 //* getCustomerIdByName
 //? @param {name}
 //? @return {String} - customerId - The customer id
 
+carMarket.getCustomerIdByName = function (costumerName) {
+  const costumer = this.customers.find((costumerObj) => costumerObj.name === costumerName);
+  return costumer && costumer.id; // coditional abuse. if costumer is undefined- will return undefined and not error,else will return costumer.id
+};
+console.log("*****CUSTOMER ID BY NAME******");
+console.log(carMarket.getCustomerIdByName("Lilah Goulding"));
+
 //* getAllCustomersNames
 //? @param {}
 //? @return {string[]} - customersNameArr -  Array of all customers name
+carMarket.getAllCustomersNames = function () {
+  const costumerName = this.customers.filter((costumerObj) => costumerObj.name);
+  return costumerName;
+};
+console.log("*****ALL CUSTOMERS NAMES******");
+console.log(carMarket.getAllCustomersNames());
 
 //* getAllCustomerCars
 //? @param {id} - costumerId - costumer id
 //? @return {object[]} - customerCarsArr -  Array of all customer cars object
 
+carMarket.getAllCustomerCars = function (costId) {
+  const customerByid = this.customers.find((customerObj) => customerObj.id === costId);
+
+  return customerByid && customerByid.cars;
+};
+console.log("*****ALL CUSTOMER CARS******");
+console.log(carMarket.getAllCustomerCars("2RprZ1dbL"));
+
 //* getCustomerCash
 //? @param {id} - costumerId - costumer id
 //? @return {number} - CustomerCash
+
+carMarket.getCustomerCash = function (costId) {
+  const costumerById = this.customers.find((costumerObj) => costumerObj.id === costId);
+  return costumerById && costumerById.cash;
+};
+console.log("*****CUSTUMER CASH BY ID******");
+console.log(carMarket.getCustomerCash("BGzHhjnE8"));
 
 //!------------------------------------------------------------
 
