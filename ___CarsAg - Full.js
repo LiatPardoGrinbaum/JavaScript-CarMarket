@@ -825,9 +825,8 @@ carMarket.decrementOrIncrementCashOfAgency = function (id, amount) {
   agency.cash += amount;
   return agency.cash;
 };
-carMarket.decrementOrIncrementCashOfAgency("Plyq5M5AZ", 100000);
 console.log("****INCREMENT CASH TO AGENCY ID Plyq5M5AZ****");
-console.log(carMarket.getAgencyByName("Best Deal"));
+console.log(carMarket.decrementOrIncrementCashOfAgency("Plyq5M5AZ", 100000));
 
 //* decrementOrIncrementCreditOfAgency
 //? @param {string} - agencyId
@@ -836,11 +835,10 @@ console.log(carMarket.getAgencyByName("Best Deal"));
 carMarket.decrementOrIncrementCreditOfAgency = function (id, amount) {
   const agency = this.sellers.find((obj) => obj.agencyId === id);
   agency.credit -= amount;
-  return agency.cash;
+  return agency.credit;
 };
-carMarket.decrementOrIncrementCreditOfAgency("Plyq5M5AZ", 50000);
 console.log("****DECREMENT CREDIT TO AGENCY ID Plyq5M5AZ****");
-console.log(carMarket.getAgencyByName("Best Deal"));
+console.log(carMarket.decrementOrIncrementCreditOfAgency("Plyq5M5AZ", 50000));
 
 //* setAmountOfCarsToBuyToAllAgency's
 //? set a new property amountOfCars to all agency's, that represent the amount of cars available in the agency.
@@ -859,15 +857,53 @@ console.log(carMarket.setAmountOfCarsToBuyToAllAgency());
 //? @param {object} - carObject
 //? @return {object[]} - allCarsOfCostumer
 
+const newCarCustomer = {
+  name: "Liat's Car",
+  year: 2013,
+  price: 40000,
+  carNumber: "4045852",
+  ownerId: "Plyq5M5AZ",
+  Brand: "Kia Picanto",
+};
+
+carMarket.setCarToCostumer = function (customerId, carObj) {
+  const customer = this.customers.find((obj) => obj.id === customerId);
+  customer.cars.push(carObj);
+  return customer.cars;
+};
+console.log("****ADDED LIATS CAR TO CUSTOMER LILAH GOULDING BY ID****");
+console.log(carMarket.setCarToCostumer("BGzHhjnE8", newCarCustomer));
+
 //* deleteCarOfCostumer
 //? @param {string} - costumerId
 //? @param {string} - carId
 //? @return {object[]} - allCarsOfCostumer
 
+carMarket.setCarToCostumer = function (customerId, carId) {
+  const customer = this.customers.find((obj) => obj.id === customerId);
+  customer.cars.forEach((car, idx) => {
+    if (car.carNumber === carId) {
+      customer.cars.splice(idx, 1);
+    }
+  });
+
+  return customer.cars;
+};
+console.log("****DELETED CAR ID WIh0U FROM CUSTOMER Ravi Murillo****");
+console.log(carMarket.setCarToCostumer("2RprZ1dbL", "WIh0U"));
+
 //* decrementOrIncrementCashOfCostumer
 //? @param {string} - costumerId
 //? @param {number} - amount - negative or positive amount
 // ? @return {number} - costumerCash
+
+carMarket.decrementOrIncrementCashOfCostumer = function (customerId, amount) {
+  const customer = this.customers.find((obj) => obj.id === customerId);
+  customer.cash += amount;
+  return customer.cash;
+};
+console.log("****INCREMENT CASH TO COSTUMER Ravi Murillo ID 2RprZ1dbL****");
+console.log(carMarket.decrementOrIncrementCashOfCostumer("2RprZ1dbL", 578054));
 
 //! -------------------------------------------------------
 //* 2) sortAndFilterByYearOfProduction
@@ -877,6 +913,23 @@ console.log(carMarket.setAmountOfCarsToBuyToAllAgency());
 //?   @param {number} - toYear - Will display vehicles up to this year
 //?   @param {boolean} - isAscendingOrder - true for ascending order, false for descending order
 //?   @return {object[]} - arrayOfModels - array of sorted cars
+arrOfCars = carMarket.getAllCarToBuy();
+carMarket.sortAndFilterByYearOfProduction = function (arrOfCars, fromYear, toYear, isAscendingOrder) {
+  const arrayOfModels = arrOfCars.slice().filter((car) => car.year >= fromYear && car.year <= toYear);
+
+  if (isAscendingOrder) {
+    //sort by ascending order
+    arrayOfModels.sort((car1, car2) => car1.year - car2.year);
+  } else {
+    //sort by descending order
+    arrayOfModels.sort((car1, car2) => car2.year - car1.year);
+  }
+  return arrayOfModels;
+};
+console.log("*****SORT AND FILTER BY YEAR OF PRODUCTION-ASCENDING OREDER*****");
+console.log(carMarket.sortAndFilterByYearOfProduction(arrOfCars, 2005, 2015, true));
+console.log("*****SORT AND FILTER BY YEAR OF PRODUCTION-DESCENDING OREDER*****");
+console.log(carMarket.sortAndFilterByYearOfProduction(arrOfCars, 2005, 2015, false));
 
 //* 3) sortAndFilterByPrice
 //?   filter and Sort in a Ascending or Descending order all vehicles for sale by price of the cars.
